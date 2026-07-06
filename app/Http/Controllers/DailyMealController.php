@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDailyMealRequest;
 use App\Http\Requests\UpdateDailyMealRequest;
 use App\Models\Company;
 use App\Models\DailyMeal;
+use App\Models\MealRate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -25,14 +26,17 @@ class DailyMealController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('daily-meals.index', compact('dailyMeals', 'search'));
+        $mealRate = MealRate::current();
+
+        return view('daily-meals.index', compact('dailyMeals', 'search', 'mealRate'));
     }
 
     public function create(): View
     {
         $companies = Company::where('status', true)->get();
+        $mealRate = MealRate::current();
 
-        return view('daily-meals.create', compact('companies'));
+        return view('daily-meals.create', compact('companies', 'mealRate'));
     }
 
     public function store(StoreDailyMealRequest $request): RedirectResponse
@@ -46,8 +50,9 @@ class DailyMealController extends Controller
     public function edit(DailyMeal $dailyMeal): View
     {
         $companies = Company::where('status', true)->get();
+        $mealRate = MealRate::current();
 
-        return view('daily-meals.edit', compact('dailyMeal', 'companies'));
+        return view('daily-meals.edit', compact('dailyMeal', 'companies', 'mealRate'));
     }
 
     public function update(UpdateDailyMealRequest $request, DailyMeal $dailyMeal): RedirectResponse

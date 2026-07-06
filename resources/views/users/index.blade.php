@@ -15,7 +15,7 @@
                 </nav>
                 <h4>User Management</h4>
             </div>
-            @if (Auth::user()->role === 'admin')
+            @if (Auth::user()->role === 'super_admin')
                 <a href="{{ route('users.create') }}" class="btn btn-primary">
                     <i class="bi bi-person-plus-fill me-1"></i> Create New User
                 </a>
@@ -79,7 +79,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (Auth::user()->role === 'admin')
+                                        @if (Auth::user()->role === 'super_admin')
                                             <div class="action-btns">
                                                 <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
                                                     <i class="bi bi-pencil-fill"></i>

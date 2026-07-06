@@ -94,5 +94,14 @@
                 </ul>
             </div>
         </div>
+
+        <div class="menu-title">Settings</div>
+
+        <div class="nav-item">
+            <a href="{{ route('settings.meal-rate') }}" class="nav-link {{ request()->routeIs('settings.meal-rate') ? 'active' : '' }}">
+                <i class="bi bi-cash-stack"></i>
+                <span>Meal Rate</span>
+            </a>
+        </div>
     </div>
 </nav>

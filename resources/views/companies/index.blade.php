@@ -15,7 +15,7 @@
                 </nav>
                 <h4>Company Management</h4>
             </div>
-            @if (Auth::user()->role === 'admin')
+            @if (Auth::user()->role === 'super_admin')
                 <a href="{{ route('companies.create') }}" class="btn btn-primary">
                     <i class="bi bi-building-add me-1"></i> Create New Company
                 </a>
@@ -77,7 +77,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (Auth::user()->role === 'admin')
+                                        @if (Auth::user()->role === 'super_admin')
                                             <div class="action-btns">
                                                 <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-warning" title="Edit">
                                                     <i class="bi bi-pencil-fill"></i>

@@ -89,6 +89,14 @@
                             @enderror
                         </div>
 
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded-3">
+                                <small class="text-muted d-block mb-1">Current Meal Rate</small>
+                                <span class="fs-5 fw-bold" style="color: #2d3748;">BDT {{ number_format($mealRate?->rate ?? 0, 2) }}</span>
+                                <small class="text-muted d-block">/ per meal</small>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <label for="remarks" class="form-label">Remarks</label>
                             <textarea id="remarks" name="remarks" rows="3"

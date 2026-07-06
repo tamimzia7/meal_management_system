@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DailyMealController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MealRateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
     Route::get('/daily-meals', [DailyMealController::class, 'index'])->name('daily-meals.index');
 
+    Route::get('/settings/meal-rate', [MealRateController::class, 'index'])->name('settings.meal-rate');
+
     Route::middleware('admin')->group(function () {
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
@@ -43,5 +46,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/daily-meals/{daily_meal}/edit', [DailyMealController::class, 'edit'])->name('daily-meals.edit');
         Route::put('/daily-meals/{daily_meal}', [DailyMealController::class, 'update'])->name('daily-meals.update');
         Route::delete('/daily-meals/{daily_meal}', [DailyMealController::class, 'destroy'])->name('daily-meals.destroy');
+    });
+
+    Route::middleware('super-admin')->group(function () {
+        Route::put('/settings/meal-rate', [MealRateController::class, 'update'])->name('settings.meal-rate.update');
     });
 });

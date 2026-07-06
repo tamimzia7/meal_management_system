@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 test('guest is redirected to login', function () {
     $response = $this->get('/');
 
@@ -13,7 +15,7 @@ test('login page loads successfully', function () {
 });
 
 test('authenticated user can access dashboard', function () {
-    $user = \App\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get('/dashboard');
 

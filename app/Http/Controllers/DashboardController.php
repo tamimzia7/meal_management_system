@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\DailyMeal;
+use App\Models\MealRate;
 use App\Models\User;
 use Illuminate\View\View;
 
@@ -20,8 +21,9 @@ class DashboardController extends Controller
         $totalCompanies = Company::count();
         $totalUsers = User::count();
 
-        $avgCostPerMeal = 50;
-        $todaysEstimatedCost = $todaysTotalMeal * $avgCostPerMeal;
+        $currentMealRate = MealRate::current();
+        $mealRateValue = $currentMealRate?->rate ?? 0;
+        $todaysEstimatedCost = $todaysTotalMeal * $mealRateValue;
 
         $recentMeals = DailyMeal::with('company')
             ->latest()
@@ -33,6 +35,8 @@ class DashboardController extends Controller
             'totalCompanies',
             'totalUsers',
             'todaysEstimatedCost',
+            'currentMealRate',
+            'mealRateValue',
             'recentMeals'
         ));
     }

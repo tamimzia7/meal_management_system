@@ -33,9 +33,43 @@
             <div class="col-xl-3 col-md-6">
                 <div class="stat-card card-secondary">
                     <i class="bi bi-cash-stack card-icon"></i>
-                    <div class="card-value">${{ number_format($todaysEstimatedCost) }}</div>
+                    <div class="card-value">BDT {{ number_format($todaysEstimatedCost, 2) }}</div>
                     <div class="card-label">Today's Estimated Cost</div>
-                    <small class="opacity-75"><i class="bi bi-calculator me-1"></i>Per meal: $50</small>
+                    <small class="opacity-75"><i class="bi bi-calculator me-1"></i>{{ number_format($mealRateValue, 2) }} BDT/meal</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="content-card">
+                    <div class="card-header">
+                        <span><i class="bi bi-cash-coin me-2"></i>Current Meal Rate</span>
+                        <a href="{{ route('settings.meal-rate') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-gear me-1"></i> Manage
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar" style="width: 55px; height: 55px; font-size: 24px; background: var(--primary-gradient);">
+                                    <i class="bi bi-cash-coin text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="fs-3 fw-bold" style="color: #2d3748;">
+                                        BDT {{ number_format($mealRateValue, 2) }}
+                                    </div>
+                                    <div class="text-muted small">Per Meal</div>
+                                </div>
+                            </div>
+                            @if ($currentMealRate)
+                                <div class="text-end text-muted small">
+                                    <div><i class="bi bi-clock me-1"></i>Updated {{ $currentMealRate->updated_at->diffForHumans() }}</div>
+                                    <div><i class="bi bi-person me-1"></i>by {{ $currentMealRate->updatedBy?->name ?? 'N/A' }}</div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

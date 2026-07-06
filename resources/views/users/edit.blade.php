@@ -72,6 +72,7 @@
                         <div class="col-md-6">
                             <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                             <select id="role" name="role" class="form-select @error('role') is-invalid @enderror">
+                                <option value="super_admin" {{ old('role', $user->role) == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                                 <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="manager" {{ old('role', $user->role) == 'manager' ? 'selected' : '' }}>Manager</option>
                                 <option value="staff" {{ old('role', $user->role) == 'staff' ? 'selected' : '' }}>Staff</option>

@@ -15,7 +15,7 @@
                 </nav>
                 <h4>Daily Meal Records</h4>
             </div>
-            @if (Auth::user()->role === 'admin')
+            @if (Auth::user()->role === 'super_admin')
                 <a href="{{ route('daily-meals.create') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i> Add Daily Meal
                 </a>
@@ -39,6 +39,14 @@
                             </div>
                         </form>
                     </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="d-flex align-items-center gap-3 justify-content-md-end">
+                            <div class="text-muted small">
+                                <span class="fw-semibold text-dark">Meal Rate:</span>
+                                BDT {{ number_format($mealRate?->rate ?? 0, 2) }}/meal
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="table-container">
@@ -52,12 +60,17 @@
                                 <th>Lunch</th>
                                 <th>Dinner</th>
                                 <th>Total</th>
+                                <th>Total Cost</th>
                                 <th>Remarks</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($dailyMeals as $meal)
+                                @php
+                                    $totalMeal = $meal->total_meal;
+                                    $totalCost = $totalMeal * ($mealRate?->rate ?? 0);
+                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration + ($dailyMeals->currentPage() - 1) * $dailyMeals->perPage() }}</td>
                                     <td>
@@ -83,13 +96,16 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge bg-info fs-6">{{ $meal->total_meal }}</span>
+                                        <span class="badge bg-info fs-6">{{ $totalMeal }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-semibold" style="color: #2d3748;">BDT {{ number_format($totalCost, 2) }}</span>
                                     </td>
                                     <td>
                                         <span class="text-muted small">{{ Str::limit($meal->remarks, 20) ?: 'N/A' }}</span>
                                     </td>
                                     <td>
-                                        @if (Auth::user()->role === 'admin')
+                                        @if (Auth::user()->role === 'super_admin')
                                             <div class="action-btns">
                                                 <a href="{{ route('daily-meals.edit', $meal) }}" class="btn btn-sm btn-warning" title="Edit">
                                                     <i class="bi bi-pencil-fill"></i>
@@ -110,7 +126,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center text-muted py-4">
+                                    <td colspan="10" class="text-center text-muted py-4">
                                         <i class="bi bi-basket fs-2 d-block mb-2"></i>
                                         No meal records found
                                     </td>

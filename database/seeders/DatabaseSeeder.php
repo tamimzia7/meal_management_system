@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\DailyMeal;
+use App\Models\MealRate;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,12 +15,12 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        User::factory()->create([
+        $superAdmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@admin.com',
             'password' => bcrypt('password'),
             'phone' => '01712345678',
-            'role' => 'admin',
+            'role' => 'super_admin',
             'status' => true,
         ]);
 
@@ -39,6 +40,11 @@ class DatabaseSeeder extends Seeder
             'phone' => '01712345670',
             'role' => 'staff',
             'status' => true,
+        ]);
+
+        MealRate::create([
+            'rate' => 120.00,
+            'created_by' => $superAdmin->id,
         ]);
 
         Company::factory(5)->create();
