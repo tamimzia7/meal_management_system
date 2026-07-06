@@ -105,19 +105,24 @@
                                         <span class="text-muted small">{{ Str::limit($meal->remarks, 20) ?: 'N/A' }}</span>
                                     </td>
                                     <td>
-                                        @if (Auth::user()->role === 'super_admin')
+                                        @php
+                                            $canEdit = Auth::user()->role === 'super_admin' || (Auth::user()->role === 'company_person' && Auth::user()->company_id === $meal->company_id);
+                                        @endphp
+                                        @if ($canEdit)
                                             <div class="action-btns">
                                                 <a href="{{ route('daily-meals.edit', $meal) }}" class="btn btn-sm btn-warning" title="Edit">
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </a>
-                                                <form action="{{ route('daily-meals.destroy', $meal) }}" method="POST"
-                                                      onsubmit="return confirm('Are you sure you want to delete this meal record?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                        <i class="bi bi-trash-fill"></i>
-                                                    </button>
-                                                </form>
+                                                @if (Auth::user()->role === 'super_admin')
+                                                    <form action="{{ route('daily-meals.destroy', $meal) }}" method="POST"
+                                                          onsubmit="return confirm('Are you sure you want to delete this meal record?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                            <i class="bi bi-trash-fill"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         @else
                                             <span class="text-muted small">View only</span>

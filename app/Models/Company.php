@@ -30,4 +30,9 @@ class Company extends Model
     {
         return $this->hasMany(DailyMeal::class);
     }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

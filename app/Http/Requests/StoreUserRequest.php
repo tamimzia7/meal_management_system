@@ -19,7 +19,8 @@ class StoreUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
             'password' => ['required', 'string', 'min:8'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role' => ['required', 'string', Rule::in(['super_admin', 'admin', 'manager', 'staff'])],
+            'role' => ['required', 'string', Rule::in(['super_admin', 'manager', 'staff', 'company_person'])],
+            'company_id' => ['required_if:role,company_person', 'exists:companies,id', 'nullable'],
             'status' => ['boolean'],
         ];
     }

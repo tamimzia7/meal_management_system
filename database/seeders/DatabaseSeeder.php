@@ -49,6 +49,20 @@ class DatabaseSeeder extends Seeder
 
         Company::factory(5)->create();
 
+        $companies = Company::all();
+
+        foreach ($companies as $i => $company) {
+            User::factory()->create([
+                'name' => "Company Person - {$company->company_name}",
+                'email' => "company{$i}@admin.com",
+                'password' => bcrypt('password'),
+                'phone' => '0171234567'.($i + 1),
+                'role' => 'company_person',
+                'company_id' => $company->id,
+                'status' => true,
+            ]);
+        }
+
         DailyMeal::factory(20)->create();
     }
 }

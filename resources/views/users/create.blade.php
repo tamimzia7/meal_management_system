@@ -72,11 +72,26 @@
                             <select id="role" name="role" class="form-select @error('role') is-invalid @enderror">
                                 <option value="">Select Role</option>
                                 <option value="super_admin" {{ old('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
-                                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>Manager</option>
                                 <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
+                                <option value="company_person" {{ old('role') == 'company_person' ? 'selected' : '' }}>Company Person</option>
                             </select>
                             @error('role')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6" id="companyField">
+                            <label for="company_id" class="form-label">Assigned Company <span class="text-danger" id="companyRequired">*</span></label>
+                            <select id="company_id" name="company_id" class="form-select @error('company_id') is-invalid @enderror">
+                                <option value="">Select Company</option>
+                                @foreach ($companies as $company)
+                                    <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>
+                                        {{ $company->company_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('company_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -105,4 +120,25 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const roleSelect = document.getElementById('role');
+            const companyField = document.getElementById('companyField');
+
+            function toggleCompanyField() {
+                if (roleSelect.value === 'company_person') {
+                    companyField.style.display = 'block';
+                } else {
+                    companyField.style.display = 'none';
+                    document.getElementById('company_id').value = '';
+                }
+            }
+
+            toggleCompanyField();
+            roleSelect.addEventListener('change', toggleCompanyField);
+        });
+    </script>
+    @endpush
 @endsection

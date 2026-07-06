@@ -50,6 +50,7 @@
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Role</th>
+                                <th>Company</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -69,7 +70,10 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone ?? 'N/A' }}</td>
                                     <td>
-                                        <span class="badge bg-info">{{ ucfirst($user->role) }}</span>
+                                        <span class="badge bg-info">{{ str_replace('_', ' ', ucfirst($user->role)) }}</span>
+                                    </td>
+                                    <td>
+                                        {{ $user->company?->company_name ?? 'N/A' }}
                                     </td>
                                     <td>
                                         @if ($user->status)

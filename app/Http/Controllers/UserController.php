@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class UserController extends Controller
     public function index(Request $request): View
     {
         $search = $request->input('search');
-        $users = User::query()
+        $users = User::with('company')
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -30,7 +31,9 @@ class UserController extends Controller
 
     public function create(): View
     {
-        return view('users.create');
+        $companies = Company::where('status', true)->get();
+
+        return view('users.create', compact('companies'));
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -46,7 +49,9 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        return view('users.edit', compact('user'));
+        $companies = Company::where('status', true)->get();
+
+        return view('users.edit', compact('user', 'companies'));
     }
 
     public function update(UpdateUserRequest $request, User $user): RedirectResponse

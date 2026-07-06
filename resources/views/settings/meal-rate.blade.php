@@ -51,6 +51,7 @@
                 </div>
             </div>
 
+            @if (Auth::user()->role === 'super_admin')
             <div class="col-lg-7">
                 <div class="content-card">
                     <div class="card-header">
@@ -83,6 +84,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 @endsection

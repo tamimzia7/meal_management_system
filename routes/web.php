@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/settings/meal-rate', [MealRateController::class, 'index'])->name('settings.meal-rate');
 
+    Route::get('/daily-meals/{daily_meal}/edit', [DailyMealController::class, 'edit'])->name('daily-meals.edit');
+    Route::put('/daily-meals/{daily_meal}', [DailyMealController::class, 'update'])->name('daily-meals.update');
+
     Route::middleware('admin')->group(function () {
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
@@ -43,8 +46,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/daily-meals/create', [DailyMealController::class, 'create'])->name('daily-meals.create');
         Route::post('/daily-meals', [DailyMealController::class, 'store'])->name('daily-meals.store');
-        Route::get('/daily-meals/{daily_meal}/edit', [DailyMealController::class, 'edit'])->name('daily-meals.edit');
-        Route::put('/daily-meals/{daily_meal}', [DailyMealController::class, 'update'])->name('daily-meals.update');
         Route::delete('/daily-meals/{daily_meal}', [DailyMealController::class, 'destroy'])->name('daily-meals.destroy');
     });
 

@@ -29,16 +29,18 @@
             </a>
             <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}" id="userMenu">
                 <ul class="collapse-menu">
+                    @if (Auth::user()->role === 'super_admin')
                     <li>
                         <a href="{{ route('users.create') }}" class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}">
                             <i class="bi bi-person-plus-fill"></i>
                             <span>Create Account</span>
                         </a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
                             <i class="bi bi-person-lines-fill"></i>
-                            <span>Update Account</span>
+                            <span>All Users</span>
                         </a>
                     </li>
                 </ul>
