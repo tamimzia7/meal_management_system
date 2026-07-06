@@ -15,9 +15,11 @@
                 </nav>
                 <h4>User Management</h4>
             </div>
-            <a href="{{ route('users.create') }}" class="btn btn-primary">
-                <i class="bi bi-person-plus-fill me-1"></i> Create New User
-            </a>
+            @if (Auth::user()->role === 'admin')
+                <a href="{{ route('users.create') }}" class="btn btn-primary">
+                    <i class="bi bi-person-plus-fill me-1"></i> Create New User
+                </a>
+            @endif
         </div>
 
         <div class="content-card">
@@ -77,19 +79,23 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="action-btns">
-                                            <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                            <form action="{{ route('users.destroy', $user) }}" method="POST"
-                                                  onsubmit="return confirm('Are you sure you want to delete this user?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @if (Auth::user()->role === 'admin')
+                                            <div class="action-btns">
+                                                <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                <form action="{{ route('users.destroy', $user) }}" method="POST"
+                                                      onsubmit="return confirm('Are you sure you want to delete this user?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="text-muted small">View only</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

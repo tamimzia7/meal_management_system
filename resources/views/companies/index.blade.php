@@ -15,9 +15,11 @@
                 </nav>
                 <h4>Company Management</h4>
             </div>
-            <a href="{{ route('companies.create') }}" class="btn btn-primary">
-                <i class="bi bi-building-add me-1"></i> Create New Company
-            </a>
+            @if (Auth::user()->role === 'admin')
+                <a href="{{ route('companies.create') }}" class="btn btn-primary">
+                    <i class="bi bi-building-add me-1"></i> Create New Company
+                </a>
+            @endif
         </div>
 
         <div class="content-card">
@@ -75,19 +77,23 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="action-btns">
-                                            <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-warning" title="Edit">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                            <form action="{{ route('companies.destroy', $company) }}" method="POST"
-                                                  onsubmit="return confirm('Are you sure you want to delete this company?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @if (Auth::user()->role === 'admin')
+                                            <div class="action-btns">
+                                                <a href="{{ route('companies.edit', $company) }}" class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                <form action="{{ route('companies.destroy', $company) }}" method="POST"
+                                                      onsubmit="return confirm('Are you sure you want to delete this company?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="text-muted small">View only</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

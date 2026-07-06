@@ -15,9 +15,11 @@
                 </nav>
                 <h4>Daily Meal Records</h4>
             </div>
-            <a href="{{ route('daily-meals.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i> Add Daily Meal
-            </a>
+            @if (Auth::user()->role === 'admin')
+                <a href="{{ route('daily-meals.create') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i> Add Daily Meal
+                </a>
+            @endif
         </div>
 
         <div class="content-card">
@@ -87,19 +89,23 @@
                                         <span class="text-muted small">{{ Str::limit($meal->remarks, 20) ?: 'N/A' }}</span>
                                     </td>
                                     <td>
-                                        <div class="action-btns">
-                                            <a href="{{ route('daily-meals.edit', $meal) }}" class="btn btn-sm btn-warning" title="Edit">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-                                            <form action="{{ route('daily-meals.destroy', $meal) }}" method="POST"
-                                                  onsubmit="return confirm('Are you sure you want to delete this meal record?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                    <i class="bi bi-trash-fill"></i>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        @if (Auth::user()->role === 'admin')
+                                            <div class="action-btns">
+                                                <a href="{{ route('daily-meals.edit', $meal) }}" class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                </a>
+                                                <form action="{{ route('daily-meals.destroy', $meal) }}" method="POST"
+                                                      onsubmit="return confirm('Are you sure you want to delete this meal record?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <span class="text-muted small">View only</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
