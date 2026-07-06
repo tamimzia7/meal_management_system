@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompanyMealRequest;
 use App\Http\Requests\StoreDailyMealRequest;
 use App\Http\Requests\UpdateDailyMealRequest;
 use App\Models\Company;
@@ -85,6 +86,47 @@ class DailyMealController extends Controller
 
         return redirect()->route('daily-meals.index')
             ->with('success', 'Daily meal record updated successfully.');
+    }
+
+    public function companyForm(): View
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'company_person') {
+            abort(403);
+        }
+
+        $dailyMeal = DailyMeal::firstOrCreate(
+            [
+                'company_id' => $user->company_id,
+                'meal_date' => today(),
+            ],
+            [
+                'breakfast_meal' => 0,
+                'lunch_meal' => 0,
+                'dinner_meal' => 0,
+            ]
+        );
+
+        return view('daily-meals.company-submit', compact('dailyMeal'));
+    }
+
+    public function companySubmit(CompanyMealRequest $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        $dailyMeal = DailyMeal::where('company_id', $user->company_id)
+            ->where('meal_date', today())
+            ->first();
+
+        if (! $dailyMeal) {
+            abort(404, 'No meal record found for today.');
+        }
+
+        $dailyMeal->update($request->validated());
+
+        return redirect()->route('daily-meals.company.form')
+            ->with('success', 'Today\'s meal requirement has been submitted successfully.');
     }
 
     public function destroy(DailyMeal $dailyMeal): RedirectResponse

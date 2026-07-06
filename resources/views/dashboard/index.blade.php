@@ -40,6 +40,23 @@
             </div>
         </div>
 
+        @if (Auth::user()->role === 'company_person')
+        <div class="row g-4 mb-4">
+            <div class="col-12">
+                <div class="content-card">
+                    <div class="card-body text-center py-4">
+                        <a href="{{ route('daily-meals.company.form') }}" class="btn btn-primary btn-lg px-5">
+                            <i class="bi bi-basket-fill me-2"></i> Submit Today's Meal Requirement
+                        </a>
+                        <p class="text-muted mt-2 mb-0 small">
+                            <i class="bi bi-info-circle me-1"></i> Update your company's daily breakfast, lunch, and dinner counts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="row g-4 mb-4">
             <div class="col-12">
                 <div class="content-card">

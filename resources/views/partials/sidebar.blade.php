@@ -71,6 +71,14 @@
             </div>
         </div>
 
+        @if (Auth::user()->role === 'company_person')
+        <div class="nav-item">
+            <a href="{{ route('daily-meals.company.form') }}" class="nav-link {{ request()->routeIs('daily-meals.company.*') ? 'active' : '' }}">
+                <i class="bi bi-basket-fill"></i>
+                <span>Submit Meal</span>
+            </a>
+        </div>
+        @else
         <div class="menu-title">Meals</div>
 
         <div class="nav-item">
@@ -96,6 +104,7 @@
                 </ul>
             </div>
         </div>
+        @endif
 
         <div class="menu-title">Settings</div>
 

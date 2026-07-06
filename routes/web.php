@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/daily-meals/{daily_meal}/edit', [DailyMealController::class, 'edit'])->name('daily-meals.edit');
     Route::put('/daily-meals/{daily_meal}', [DailyMealController::class, 'update'])->name('daily-meals.update');
 
+    Route::get('/my-company/meal', [DailyMealController::class, 'companyForm'])->name('daily-meals.company.form');
+    Route::post('/my-company/meal', [DailyMealController::class, 'companySubmit'])->name('daily-meals.company.submit');
+
     Route::middleware('admin')->group(function () {
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
