@@ -518,26 +518,42 @@ body {
 /* Pagination */
 .pagination {
     margin-bottom: 0;
+    gap: 6px;
+}
+
+.page-item {
+    list-style: none;
 }
 
 .page-link {
-    border: 1px solid #e2e8f0;
+    border: none;
     color: #4a5568;
-    padding: 8px 14px;
+    padding: 8px 16px;
     font-size: 14px;
-    border-radius: 8px !important;
-    margin: 0 2px;
+    font-weight: 500;
+    border-radius: 10px !important;
+    transition: all 0.2s ease;
+    background: transparent;
+    min-width: 38px;
+    text-align: center;
 }
 
 .page-link:hover {
-    background: #f7fafc;
+    background: #f0f2ff;
     color: #667eea;
-    border-color: #667eea;
+    transform: translateY(-1px);
 }
 
 .page-item.active .page-link {
     background: var(--primary-gradient);
-    border-color: transparent;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.page-item.disabled .page-link {
+    color: #cbd5e0;
+    background: transparent;
 }
 
 /* Login Page */
