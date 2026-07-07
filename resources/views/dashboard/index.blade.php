@@ -108,10 +108,17 @@
                                         <th>Lunch</th>
                                         <th>Dinner</th>
                                         <th>Total</th>
+                                        <th class="text-end">Today's Total Meal Cost</th>
+                                        <th class="text-end">Monthly Meal Cost</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($recentMeals as $meal)
+                                        @php
+                                            $companyId = $meal->company_id;
+                                            $todayCost = ($companyTodayTotals[$companyId] ?? 0) * $mealRateValue;
+                                            $monthCost = ($companyMonthlyTotals[$companyId] ?? 0) * $mealRateValue;
+                                        @endphp
                                         <tr>
                                             <td>
                                                 <span class="fw-semibold">{{ $meal->company->company_name }}</span>
@@ -121,10 +128,12 @@
                                             <td><span class="badge bg-success">{{ $meal->lunch_meal }}</span></td>
                                             <td><span class="badge bg-warning">{{ $meal->dinner_meal }}</span></td>
                                             <td><strong>{{ $meal->total_meal }}</strong></td>
+                                            <td class="text-end">BDT {{ number_format($todayCost, 2) }}</td>
+                                            <td class="text-end">BDT {{ number_format($monthCost, 2) }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center text-muted py-4">
+                                            <td colspan="8" class="text-center text-muted py-4">
                                                 <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                                                 No meal records yet
                                             </td>

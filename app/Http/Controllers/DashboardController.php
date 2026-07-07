@@ -46,6 +46,26 @@ class DashboardController extends Controller
 
         $recentMeals = $recentMealsQuery->latest()->take(5)->get();
 
+        $companyIds = $recentMeals->pluck('company_id')->unique();
+
+        if ($companyIds->isNotEmpty()) {
+            $companyTodayTotals = DailyMeal::where('meal_date', $today)
+                ->whereIn('company_id', $companyIds)
+                ->selectRaw('company_id, COALESCE(SUM(breakfast_meal + lunch_meal + dinner_meal), 0) as total')
+                ->groupBy('company_id')
+                ->pluck('total', 'company_id');
+
+            $monthStart = now()->startOfMonth()->toDateString();
+            $companyMonthlyTotals = DailyMeal::whereBetween('meal_date', [$monthStart, $today])
+                ->whereIn('company_id', $companyIds)
+                ->selectRaw('company_id, COALESCE(SUM(breakfast_meal + lunch_meal + dinner_meal), 0) as total')
+                ->groupBy('company_id')
+                ->pluck('total', 'company_id');
+        } else {
+            $companyTodayTotals = collect();
+            $companyMonthlyTotals = collect();
+        }
+
         return view('dashboard.index', compact(
             'todaysTotalMeal',
             'totalCompanies',
@@ -53,7 +73,9 @@ class DashboardController extends Controller
             'todaysEstimatedCost',
             'currentMealRate',
             'mealRateValue',
-            'recentMeals'
+            'recentMeals',
+            'companyTodayTotals',
+            'companyMonthlyTotals'
         ));
     }
 }
